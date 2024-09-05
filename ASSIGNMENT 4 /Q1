@@ -1,18 +1,22 @@
-// importing crypto library
-const crypto = require('crypto');
-function DesiredHash(){
-    // Creating number for to fing hash ehith 00000
-    let number =0 ;
-    // creating hash of number
-    hash = crypto.createHash('sha256').update(number+"").digest('hex');
-    // checking if hash is strating with 00000
-    let condition = hash.startsWith("00000")
-    while(!condition){
-        // incrementing number to find new hashing
-        number+=1;
-        hash = crypto.createHash('sha256').update(number+"").digest('hex');
-        condition = hash.startsWith("00000")
+
+// What if I ask you the following question — Give me an input string that outputs a SHA-256 hash that starts with 00000 . How will you do it?
+
+const crypto = require("crypto");
+
+function findHash(prefix) {
+  let input = 0;
+  let inputStr, hash;
+  while (true) {
+    inputStr = input.toString();
+    hash = crypto.createHash("sha256").update(inputStr).digest("hex");
+    if (hash.startsWith(prefix)) {
+      return { input, hash };
     }
-    console.log(hash)
+    input++;
+  }
 }
-DesiredHash()
+
+const res = findHash("00000");
+console.log(`Input: ${res.input}`);
+console.log(`Hash: ${res.hash}`);
+
